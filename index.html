@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog do Breno</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Blog do Breno</h1>
+        <nav>
+            <a href="admin/">Login (Netlify CMS)</a>
+        </nav>
+    </header>
+
+    <main id="posts-container">
+        <!-- Os posts serão carregados aqui -->
+    </main>
+
+    <script>
+        // Script para carregar os posts do CMS automaticamente
+        fetch('admin/config.yml')
+        .then(response => response.text())
+        .then(text => {
+            const postsContainer = document.getElementById("posts-container");
+            const posts = text.match(/- path: "posts\/(.*?)\.md"/g) || [];
+
+            posts.forEach(post => {
+                const filename = post.match(/posts\/(.*?)\.md/)[1];
+                const postElement = document.createElement("div");
+                postElement.className = "post";
+                postElement.innerHTML = `<a href="posts/${filename}.html">${filename.replace(/-/g, " ")}</a>`;
+                postsContainer.appendChild(postElement);
+            });
+        });
+    </script>
+</body>
+</html>
